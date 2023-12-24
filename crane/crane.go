@@ -105,18 +105,20 @@ func (c *Crane) start() error {
 		if err := json.Unmarshal(msg, &data); err != nil {
 			c.Logger.Print(err.Error())
 		}
-		val, flg := data["ope"]
-		if flg {
-			ope := val.(string)
-			var handler func(*melody.Session, *Crane, []byte)
-			c.Logger.Print(ope)
-			if ope == "get" {
-				handler = c.Handlers.Get(ope)
-			} else {
-				handler = c.Handlers.Get("start")
-			}
-			handler(s, c, msg)
-		}
+		handler := c.Handlers.Get("start")
+		handler(s, c, msg)
+		//val, flg := data["ope"]
+		//if flg {
+		//	ope := val.(string)
+		//	var handler func(*melody.Session, *Crane, []byte)
+		//	c.Logger.Print(ope)
+		//	if ope == "get" {
+		//		handler = c.Handlers.Get(ope)
+		//	} else {
+		//		handler = c.Handlers.Get("start")
+		//	}
+		//	handler(s, c, msg)
+		//}
 	})
 
 	go c.CreateSender()
